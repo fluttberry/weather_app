@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 150,
+          top: 200,
           left: 50,
           child: Column(
             children: [
@@ -42,25 +42,36 @@ class HomePage extends StatelessWidget {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   const Text(
-                    '8',
+                    '8\u00B0',
                     style: TextStyles.text100White,
                   ),
-                ],
-              ),
-              Row(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
                   const Text(
-                    'Жылуу кийинип чык',
-                    style: TextStyles.text25Black,
+                    '🔅',
+                    style: TextStyles.text60White,
                   ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  const Text('Data'),
                 ],
               ),
             ],
+          ),
+        ),
+        const Positioned(
+          left: 10,
+          top: 400,
+          child: Text(
+            '''
+            Жылуу кийинип чык
+            Жылуу кийинип чык
+            Жылуу кийинип чык
+            ''',
+            style: TextStyles.text25Black,
+          ),
+        ),
+        const Positioned(
+          top: 700,
+          left: 150,
+          child: Text(
+            'Bishkek',
+            style: TextStyles.text35White,
           ),
         ),
       ]),

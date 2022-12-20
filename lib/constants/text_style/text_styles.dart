@@ -6,10 +6,12 @@ class TextStyles {
       fontSize: 60, color: AppColors.white, fontWeight: FontWeight.bold);
   static const TextStyle text100White = TextStyle(
       fontSize: 100, color: AppColors.white, fontWeight: FontWeight.bold);
-  static const TextStyle text25Black =
-      TextStyle(fontSize: 25, color: AppColors.black);
+  static const TextStyle text25Black = TextStyle(
+      fontSize: 25, color: AppColors.black, fontWeight: FontWeight.bold);
   static const TextStyle text35Black =
       TextStyle(fontSize: 35, color: AppColors.black);
+  static const TextStyle text35White =
+      TextStyle(fontSize: 35, color: AppColors.white);
   static const TextStyle text15Grey =
       TextStyle(fontSize: 15, color: AppColors.black);
   static const TextStyle text15White =
