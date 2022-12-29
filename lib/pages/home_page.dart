@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/constants/text_style/text_styles.dart';
+import 'package:weather_app/pages/search_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,10 +11,20 @@ class HomePage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         // ignore: prefer_const_constructors
-        actions: const [
-          Icon(
-            Icons.location_city,
-            size: 50,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const SearchPage()),
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.location_city,
+              size: 50,
+            ),
           ),
         ],
         leading: Image.asset(
