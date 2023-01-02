@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/constants/colors/colors.dart';
 import 'package:weather_app/constants/text_style/text_styles.dart';
 
 class SearchPage extends StatelessWidget {
@@ -50,6 +51,7 @@ class SearchPage extends StatelessWidget {
             OutlinedButton(
               onPressed: () {},
               style: OutlinedButton.styleFrom(
+                backgroundColor: AppColors.grey.withOpacity(0.3),
                 foregroundColor: Colors.white,
                 // backgroundColor: Colors.transparent,
                 side: const BorderSide(color: Colors.black, width: 3),
