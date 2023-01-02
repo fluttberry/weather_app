@@ -70,4 +70,3 @@ class SearchPage extends StatelessWidget {
   }
 }
 
-//https://www.youtube.com/watch?v=NyZRJK37fUI 21 min
