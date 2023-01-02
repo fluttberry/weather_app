@@ -8,6 +8,8 @@ class TextStyles {
       fontSize: 100, color: AppColors.white, fontWeight: FontWeight.bold);
   static const TextStyle text25Black = TextStyle(
       fontSize: 25, color: AppColors.black, fontWeight: FontWeight.bold);
+  static const TextStyle text20Black = TextStyle(
+      fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold);
   static const TextStyle text35Black =
       TextStyle(fontSize: 35, color: AppColors.black);
   static const TextStyle text35White =
