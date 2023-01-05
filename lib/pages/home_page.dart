@@ -15,7 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String temp = '';
+  dynamic temp = '';
+  bool isLoading = false;
   @override
   void initState() {
     showWeatherByLocation();
@@ -32,6 +33,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void>? getWeatherByLocation({Position? positionBer}) async {
+    setState(() {
+      isLoading = true;
+    });
     final clientHttp = http.Client();
     Uri uri = Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
@@ -39,8 +43,13 @@ class _HomePageState extends State<HomePage> {
     final jsonResponse = jsonDecode(response.body);
     // log('json ===> ${jsonResponse.body}');
 
-    temp = jsonResponse['main'] ['temp'];
+    final kelvin = (jsonResponse['main']['temp']);
+    temp = kelvin - 273.15.round();
+
     log('temperature ${jsonResponse['main']['temp']}');
+    setState(() {
+      isLoading = false;
+    });
   }
 
 //GPS
@@ -115,10 +124,18 @@ class _HomePageState extends State<HomePage> {
               Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                   Text(
-                    '$temp\u00B0',
-                    style: TextStyles.text100White,
-                  ),
+                  isLoading == true
+                      // ignore: prefer_const_constructors
+                      ? SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                          ))
+                      : Text(
+                          '$temp\u00B0',
+                          style: TextStyles.text100White,
+                        ),
                   const Text(
                     '🔅',
                     style: TextStyles.text60White,
@@ -153,4 +170,5 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+//https://www.youtube.com/watch?v=x5b6XyHdQIU 58 min
 //https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988
