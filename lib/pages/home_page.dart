@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String temp = '';
   @override
   void initState() {
     showWeatherByLocation();
@@ -23,22 +24,23 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> showWeatherByLocation() async {
     final position = await _getPosition();
-    await getWeatherByLocation(position);
+    await getWeatherByLocation(positionBer: position);
 
     // log('Position Lat ${position.latitude}');
     // log('Position Log ${position.longitude}');
     // await getWeatherByLocation(position);
   }
 
-  Future<void>? getWeatherByLocation(Position? position) async {
+  Future<void>? getWeatherByLocation({Position? positionBer}) async {
     final clientHttp = http.Client();
     Uri uri = Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
     final response = await clientHttp.get(uri);
     final jsonResponse = jsonDecode(response.body);
     // log('json ===> ${jsonResponse.body}');
-    log('response ===> ${response.body}');
-    final data = response;
+
+    temp = jsonResponse['main'] ['temp'];
+    log('temperature ${jsonResponse['main']['temp']}');
   }
 
 //GPS
@@ -113,8 +115,8 @@ class _HomePageState extends State<HomePage> {
               Row(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  const Text(
-                    '8\u00B0',
+                   Text(
+                    '$temp\u00B0',
                     style: TextStyles.text100White,
                   ),
                   const Text(
@@ -150,3 +152,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+//https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988
