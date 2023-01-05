@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,13 +23,21 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> showWeatherByLocation() async {
     final position = await _getPosition();
-    log('Position ${position.latitude}');
-    log('Position ${position.longitude}');
+    await getWeatherByLocation(position);
+
+    // log('Position Lat ${position.latitude}');
+    // log('Position Log ${position.longitude}');
     // await getWeatherByLocation(position);
   }
 
-  Future<void>? getWeatherByLocation(Position? position) {
-    final response = http.Client();
+  Future<void>? getWeatherByLocation(Position? position) async {
+    final clientHttp = http.Client();
+    Uri uri = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
+    final response = await clientHttp.get(uri);
+    final jsonResponse = jsonDecode(response.body);
+    // log('json ===> ${jsonResponse.body}');
+    log('response ===> ${response.body}');
     final data = response;
   }
 
