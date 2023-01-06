@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   dynamic temp = '';
   String cityName = '';
   String description = '';
+  String icons = '';
   bool isLoading = false;
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
     temp = WeatherUtil.relvinToCelsius(kelvin);
     cityName = jsonResponse['name'];
     description = WeatherUtil.getDescription(temp);
+    icons = WeatherUtil.getWeatherIcon(kelvin);
 
     // log('temperature ${jsonResponse['main']['temp']}');
     setState(() {
@@ -145,8 +147,8 @@ class _HomePageState extends State<HomePage> {
                           '$temp\u00B0',
                           style: TextStyles.text100White,
                         ),
-                        const Text(
-                          '🔅',
+                        Text(
+                          icons,
                           style: TextStyles.text60White,
                         ),
                       ],

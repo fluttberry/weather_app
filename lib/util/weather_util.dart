@@ -3,6 +3,26 @@ class WeatherUtil {
     return kelvin - 273.15.round();
   }
 
+  static String getWeatherIcon(num kelvin) {
+    if (kelvin < 300) {
+      return ' 🌧';
+    } else if (kelvin < 400) {
+      return '☀️';
+    } else if (kelvin < 600) {
+      return '☔️';
+    } else if (kelvin < 700) {
+      return '☃️';
+    } else if (kelvin < 800) {
+      return '🌫';
+    } else if (kelvin == 800) {
+      return '☁️s';
+    } else if (kelvin <= 804) {
+      return '☁️';
+    } else {
+      return '🤷‍';
+    }
+  }
+
   static String getDescription(num temp) {
     if (temp > 25) {
       return 'It\'s 🍦 time';
