@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/constants/text_style/text_styles.dart';
 import 'package:weather_app/pages/search_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:weather_app/util/weather_util.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   dynamic temp = '';
+  String cityName = '';
+  String description = '';
   bool isLoading = false;
   @override
   void initState() {
@@ -41,12 +44,13 @@ class _HomePageState extends State<HomePage> {
         'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
     final response = await clientHttp.get(uri);
     final jsonResponse = jsonDecode(response.body);
-    // log('json ===> ${jsonResponse.body}');
 
     final kelvin = (jsonResponse['main']['temp']);
-    temp = kelvin - 273.15.round();
+    temp = WeatherUtil.relvinToCelsius(kelvin);
+    cityName = jsonResponse['name'];
+    description = WeatherUtil.getDescription(temp);
 
-    log('temperature ${jsonResponse['main']['temp']}');
+    // log('temperature ${jsonResponse['main']['temp']}');
     setState(() {
       isLoading = false;
     });
@@ -116,52 +120,53 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Positioned(
-          top: 200,
-          left: 50,
-          child: Column(
-            children: [
-              Row(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  isLoading == true
-                      // ignore: prefer_const_constructors
-                      ? SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                          ))
-                      : Text(
+        isLoading == true
+            // ignore: prefer_const_constructors
+            ? Positioned(
+                top: 400,
+                left: 180,
+                child: const SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : Positioned(
+                top: 200,
+                left: 50,
+                child: Column(
+                  children: [
+                    Row(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Text(
                           '$temp\u00B0',
                           style: TextStyles.text100White,
                         ),
-                  const Text(
-                    '🔅',
-                    style: TextStyles.text60White,
-                  ),
-                ],
+                        const Text(
+                          '🔅',
+                          style: TextStyles.text60White,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        const Positioned(
-          left: 10,
+        Positioned(
+          right: 50,
           top: 400,
           child: Text(
-            '''
-            Жылуу кийинип чык
-            Жылуу кийинип чык
-            Жылуу кийинип чык
-            ''',
+            description,
             style: TextStyles.text25Black,
           ),
         ),
-        const Positioned(
+        Positioned(
           top: 700,
           left: 150,
           child: Text(
-            'Bishkek',
+            cityName,
             style: TextStyles.text35White,
           ),
         ),
@@ -170,5 +175,5 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//https://www.youtube.com/watch?v=x5b6XyHdQIU 58 min
+//https://www.youtube.com/watch?v=x5b6XyHdQIU 1-23 min
 //https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988
