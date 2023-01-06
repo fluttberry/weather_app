@@ -40,22 +40,44 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = true;
     });
-    final clientHttp = http.Client();
-    Uri uri = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
-    final response = await clientHttp.get(uri);
-    final jsonResponse = jsonDecode(response.body);
+    try {
+      final clientHttp = http.Client();
 
-    final kelvin = (jsonResponse['main']['temp']);
-    temp = WeatherUtil.relvinToCelsius(kelvin);
-    cityName = jsonResponse['name'];
-    description = WeatherUtil.getDescription(temp);
-    icons = WeatherUtil.getWeatherIcon(kelvin);
+      Uri uri = Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
+      final response = await clientHttp.get(uri);
+      final jsonResponse = jsonDecode(response.body);
+
+      final kelvin = (jsonResponse['main']['temp']);
+      temp = WeatherUtil.relvinToCelsius(kelvin);
+      cityName = jsonResponse['name'];
+      description = WeatherUtil.getDescription(temp);
+      icons = WeatherUtil.getWeatherIcon(kelvin);
+    } catch (error) {
+      throw Exception(error);
+    }
 
     // log('temperature ${jsonResponse['main']['temp']}');
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void>? getCityName(String cityName) async {
+    final client = http.Client();
+    try {
+      Uri uri = Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=3bf0e75c85dc9da39e7eb5c655825988');
+      final response = await client.get(uri);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = json.decode(response.body);
+        return data;
+      } else {
+        null;
+      }
+    } catch (error) {
+      throw Exception(error);
+    }
   }
 
 //GPS
@@ -91,11 +113,11 @@ class _HomePageState extends State<HomePage> {
         // ignore: prefer_const_constructors
         actions: [
           InkWell(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final typedCityName = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: ((context) => const SearchPage()),
+                  builder: ((context) => SearchPage()),
                 ),
               );
             },
@@ -177,5 +199,5 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//https://www.youtube.com/watch?v=x5b6XyHdQIU 1-23 min
+
 //https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988
