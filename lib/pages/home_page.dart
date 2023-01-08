@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       final clientHttp = http.Client();
 
       Uri uri = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?lat=${positionBer?.latitude}&lon=${positionBer?.longitude}&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
+          'https://api.openweathermap.org/data/2.5/weather?lat=${positionBer!.latitude}&lon=${positionBer.longitude}&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
       final response = await clientHttp.get(uri);
       final jsonResponse = jsonDecode(response.body);
 
