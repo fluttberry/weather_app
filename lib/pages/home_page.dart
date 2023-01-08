@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> showWeatherByLocation() async {
     final position = await _getPosition();
     await getWeatherByLocation(positionBer: position);
+    await getCityName(cityName);
 
     // log('Position Lat ${position.latitude}');
     // log('Position Log ${position.longitude}');
@@ -44,12 +45,12 @@ class _HomePageState extends State<HomePage> {
       final clientHttp = http.Client();
 
       Uri uri = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?lat=40.5254658&lon=72.7976182&appid=3bf0e75c85dc9da39e7eb5c655825988');
+          'https://api.openweathermap.org/data/2.5/weather?lat=${positionBer?.latitude}&lon=${positionBer?.longitude}&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
       final response = await clientHttp.get(uri);
       final jsonResponse = jsonDecode(response.body);
 
       final kelvin = (jsonResponse['main']['temp']);
-      temp = WeatherUtil.relvinToCelsius(kelvin);
+      temp = kelvin;
       cityName = jsonResponse['name'];
       description = WeatherUtil.getDescription(temp);
       icons = WeatherUtil.getWeatherIcon(kelvin);
@@ -67,11 +68,17 @@ class _HomePageState extends State<HomePage> {
     final client = http.Client();
     try {
       Uri uri = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=3bf0e75c85dc9da39e7eb5c655825988');
+          'https://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
       final response = await client.get(uri);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
-        return data;
+
+        final kelvin = data['main']['temp'];
+        temp = kelvin;
+        cityName = data['name'];
+        icons = WeatherUtil.getWeatherIcon(kelvin);
+        description = WeatherUtil.getDescription(temp);
+        setState(() {});
       } else {
         null;
       }
@@ -120,6 +127,8 @@ class _HomePageState extends State<HomePage> {
                   builder: ((context) => SearchPage()),
                 ),
               );
+              await getCityName(typedCityName);
+              setState(() {});
             },
             child: const Icon(
               Icons.location_city,
