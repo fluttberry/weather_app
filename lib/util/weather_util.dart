@@ -1,7 +1,7 @@
 class WeatherUtil {
-  // static num relvinToCelsius(double kelvin) {
-  //   return kelvin;
-  // }
+  static kelvinToCelsius(num kelvin) {
+    return (kelvin - 273.15).toStringAsFixed(0);
+  }
 
   static String getWeatherIcon(num kelvin) {
     if (kelvin < 300) {

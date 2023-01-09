@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:weather_app/constants/text_style/text_styles.dart';
 import 'package:weather_app/pages/search_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:weather_app/util/weather_util.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,11 +63,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void>? getCityName(String cityName) async {
+  Future<void>? getCityName(String typeCityName) async {
     final client = http.Client();
     try {
       Uri uri = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
+          'https://api.openweathermap.org/data/2.5/weather?q=$typeCityName&units=metric&appid=3bf0e75c85dc9da39e7eb5c655825988');
       final response = await client.get(uri);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
@@ -113,6 +112,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
